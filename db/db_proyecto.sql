@@ -26,6 +26,7 @@ CREATE TABLE `usuario` (
   `fechaRegistro` timestamp NOT NULL,
   `nombreUsuario` timestamp NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
