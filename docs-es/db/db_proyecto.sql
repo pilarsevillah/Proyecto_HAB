@@ -66,6 +66,8 @@ CREATE TABLE `user` (
   `verified` tinyint(1) NOT NULL DEFAULT '0',
   `suspended` tinyint(1) NOT NULL DEFAULT '0',
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `loginattemps` smallint unsigned NOT NULL DEFAULT '0',
+  `loginlockoutexpiry` int unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
