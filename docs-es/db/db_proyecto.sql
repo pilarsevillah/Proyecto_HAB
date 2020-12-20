@@ -196,3 +196,10 @@ BEGIN
         WHERE id = userID;
 END ;;
 DELIMITER ;
+
+CREATE EVENT IF NOT EXISTS reduceReputationDaily
+ON SCHEDULE EVERY 5 DAY_HOUR
+COMMENT 'Reduce user\'s reputation every day'
+DO
+	CALL `db_proyecto_consulta`.`updatePlatformReputation`();
+	CALL `db_proyecto_consulta`.`updateLanguageReputation`();
