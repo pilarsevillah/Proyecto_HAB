@@ -47,13 +47,13 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
-  `middle_name` varchar(45) DEFAULT NULL,
-  `surname` varchar(45) DEFAULT NULL,
-  `email` varchar(60) NOT NULL,
-  `password` varchar(100) DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
+  `surname_1` varchar(100) NOT NULL DEFAULT '',
+  `surname_2` varchar(100) NOT NULL DEFAULT '',
+  `username` varchar(100) NOT NULL DEFAULT '',
+  `password` varchar(255) NOT NULL DEFAULT '',
+  `email` varchar(100) NOT NULL,
   `registered` timestamp NOT NULL,
-  `username` timestamp NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
