@@ -53,6 +53,7 @@ CREATE TABLE `user` (
   `username` varchar(100) NOT NULL DEFAULT '',
   `password` varchar(255) NOT NULL DEFAULT '',
   `email` varchar(100) NOT NULL,
+  `bio` longtext,
   `timecreated` bigint NOT NULL DEFAULT '0',
   `timemodified` bigint NOT NULL DEFAULT '0',
   `firstaccess` bigint NOT NULL DEFAULT '0',
