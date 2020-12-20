@@ -81,11 +81,12 @@ CREATE TABLE `user - language` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `id_user` bigint NOT NULL,
   `id_language` bigint NOT NULL,
+  `reputation` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_usuario - lenguaje_1_idx` (`id_user`),
   KEY `fk_usuario - lenguaje_2_idx` (`id_language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
 DROP TABLE IF EXISTS `vote`;
