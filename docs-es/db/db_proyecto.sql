@@ -28,6 +28,7 @@ CREATE TABLE `language` (
   UNIQUE KEY `nombre_UNIQUE` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
 DROP TABLE IF EXISTS `question`;
 
 CREATE TABLE `question` (
@@ -42,6 +43,7 @@ CREATE TABLE `question` (
   KEY `fk_pregunta_1_idx` (`id_language`),
   KEY `fk_pregunta_2_idx` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 DROP TABLE IF EXISTS `user`;
 
@@ -60,6 +62,7 @@ CREATE TABLE `user` (
   `lastaccess` bigint NOT NULL DEFAULT '0',
   `lastlogin` bigint NOT NULL DEFAULT '0',
   `currentlogin` bigint NOT NULL DEFAULT '0',
+  `lastip` varchar(45) NOT NULL DEFAULT '',
   `verified` tinyint(1) NOT NULL DEFAULT '0',
   `suspended` tinyint(1) NOT NULL DEFAULT '0',
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -67,6 +70,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 DROP TABLE IF EXISTS `user - language`;
 
@@ -79,6 +83,7 @@ CREATE TABLE `user - language` (
   KEY `fk_usuario - lenguaje_1_idx` (`id_user`),
   KEY `fk_usuario - lenguaje_2_idx` (`id_language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 DROP TABLE IF EXISTS `vote`;
 
