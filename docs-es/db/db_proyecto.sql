@@ -1,13 +1,13 @@
-CREATE DATABASE  IF NOT EXISTS `db_proyecto_consulta`; 
+CREATE DATABASE  IF NOT EXISTS `db_proyecto_consulta`;
 USE `db_proyecto_consulta`;
-
 
 DROP TABLE IF EXISTS `answer`;
 
+
 CREATE TABLE `answer` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `id_question` mediumint NOT NULL,
-  `id_user` mediumint NOT NULL,
+  `id_question` bigint NOT NULL,
+  `id_user` bigint NOT NULL,
   `content` varchar(500) NOT NULL,
   `created` timestamp NOT NULL,
   PRIMARY KEY (`id`),
@@ -33,8 +33,8 @@ DROP TABLE IF EXISTS `question`;
 
 CREATE TABLE `question` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `id_language` mediumint NOT NULL,
-  `id_user` mediumint NOT NULL,
+  `id_language` bigint NOT NULL,
+  `id_user` bigint NOT NULL,
   `created` timestamp NOT NULL,
   `title` varchar(100) NOT NULL,
   `content` varchar(500) NOT NULL,
@@ -68,6 +68,7 @@ CREATE TABLE `user` (
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   `loginattemps` smallint unsigned NOT NULL DEFAULT '0',
   `loginlockoutexpiry` int unsigned NOT NULL DEFAULT '0',
+  `reputation` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
@@ -78,8 +79,8 @@ DROP TABLE IF EXISTS `user - language`;
 
 CREATE TABLE `user - language` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `id_user` mediumint NOT NULL,
-  `id_language` mediumint NOT NULL,
+  `id_user` bigint NOT NULL,
+  `id_language` bigint NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_usuario - lenguaje_1_idx` (`id_user`),
@@ -91,12 +92,11 @@ DROP TABLE IF EXISTS `vote`;
 
 CREATE TABLE `vote` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `id_question` mediumint NOT NULL,
-  `id_user` mediumint NOT NULL,
+  `id_question` bigint NOT NULL,
+  `id_user` bigint NOT NULL,
   `vote` enum('-1','0','1') NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `usuario_pregunta_UNIQUE` (`id_question`,`id_user`),
   KEY `fk_voto_2_idx` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
