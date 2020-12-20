@@ -53,12 +53,16 @@ CREATE TABLE `user` (
   `username` varchar(100) NOT NULL DEFAULT '',
   `password` varchar(255) NOT NULL DEFAULT '',
   `email` varchar(100) NOT NULL,
-  `registered` timestamp NOT NULL,
+  `timecreated` bigint NOT NULL DEFAULT '0',
+  `timemodified` bigint NOT NULL DEFAULT '0',
+  `firstaccess` bigint NOT NULL DEFAULT '0',
+  `lastaccess` bigint NOT NULL DEFAULT '0',
+  `lastlogin` bigint NOT NULL DEFAULT '0',
+  `currentlogin` bigint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 DROP TABLE IF EXISTS `user - language`;
 
 CREATE TABLE `user - language` (
