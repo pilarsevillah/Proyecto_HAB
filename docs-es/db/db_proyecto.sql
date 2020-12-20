@@ -1,8 +1,8 @@
 CREATE DATABASE  IF NOT EXISTS `db_proyecto_consulta`;
 USE `db_proyecto_consulta`;
 
-DROP TABLE IF EXISTS `answer`;
 
+DROP TABLE IF EXISTS `answer`;
 
 CREATE TABLE `answer` (
   `id` bigint NOT NULL AUTO_INCREMENT,
@@ -22,11 +22,11 @@ DROP TABLE IF EXISTS `language`;
 CREATE TABLE `language` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
-  `description` varchar(150) DEFAULT NULL,
+  `description` longtext,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `nombre_UNIQUE` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 DROP TABLE IF EXISTS `question`;
@@ -72,7 +72,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 DROP TABLE IF EXISTS `user - language`;
@@ -86,7 +86,7 @@ CREATE TABLE `user - language` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_usuario - lenguaje_1_idx` (`id_user`),
   KEY `fk_usuario - lenguaje_2_idx` (`id_language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 DROP TABLE IF EXISTS `vote`;
@@ -101,3 +101,98 @@ CREATE TABLE `vote` (
   UNIQUE KEY `usuario_pregunta_UNIQUE` (`id_question`,`id_user`),
   KEY `fk_voto_2_idx` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+DELIMITER ;;
+CREATE PROCEDURE `updateLanguageReputation`()
+BEGIN
+	
+    DECLARE finished INTEGER DEFAULT 0;
+    DECLARE idUserLanguageRel BIGINT DEFAULT 0;
+    
+	DECLARE pointer CURSOR FOR SELECT id FROM `user - language`;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;  
+	
+    OPEN pointer;
+    
+    updateReputation: LOOP
+		FETCH pointer INTO idUserLanguageRel;
+		IF finished = 1 THEN 
+			LEAVE updateReputation;
+		END IF;
+		CALL `db_proyecto_consulta`.`updateUserLanguageReputation`(idUserLanguageRel);
+	END LOOP updateReputation;
+    
+    CLOSE pointer;
+        
+END ;;
+DELIMITER ;
+
+
+DELIMITER ;;
+CREATE PROCEDURE `updatePlatformReputation`()
+BEGIN
+	
+    DECLARE finished INTEGER DEFAULT 0;
+    DECLARE userID BIGINT DEFAULT 0;
+    
+	DECLARE pointer CURSOR FOR SELECT id FROM user;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;  
+	
+    OPEN pointer;
+    
+    updateReputation: LOOP
+		FETCH pointer INTO userID;
+		IF finished = 1 THEN 
+			LEAVE updateReputation;
+		END IF;
+		CALL `db_proyecto_consulta`.`updateUserPlatformReputation`(userID);
+	END LOOP updateReputation;
+    
+    CLOSE pointer;
+        
+END ;;
+DELIMITER ;
+
+
+DELIMITER ;;
+CREATE PROCEDURE `updateUserLanguageReputation`(IN idrow BIGINT)
+BEGIN
+	DECLARE aux INTEGER DEFAULT 1;
+    DECLARE rep INTEGER DEFAULT 0;
+
+	SELECT reputation
+	INTO rep
+    FROM `user - language`
+    WHERE id = idrow;
+    
+    IF rep - 2 >= 1 THEN
+		SET aux = rep - 2;
+	END IF;
+    
+	UPDATE `user - language`
+        SET reputation=aux
+        WHERE id = idrow;
+END ;;
+DELIMITER ;
+
+
+DELIMITER ;;
+CREATE PROCEDURE `updateUserPlatformReputation`(IN userID BIGINT)
+BEGIN
+	DECLARE aux INTEGER DEFAULT 1;
+    DECLARE rep INTEGER DEFAULT 0;
+
+	SELECT reputation
+	INTO rep
+    FROM user
+    WHERE id = userID;
+    
+    IF rep - 2 >= 1 THEN
+		SET aux = rep - 2;
+	END IF;
+    
+	UPDATE user
+        SET reputation=aux
+        WHERE id = userID;
+END ;;
+DELIMITER ;
