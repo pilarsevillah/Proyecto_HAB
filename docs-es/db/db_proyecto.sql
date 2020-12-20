@@ -5,7 +5,7 @@ USE `db_proyecto_consulta`;
 DROP TABLE IF EXISTS `answer`;
 
 CREATE TABLE `answer` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `id_question` mediumint NOT NULL,
   `id_user` mediumint NOT NULL,
   `content` varchar(500) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE `answer` (
 DROP TABLE IF EXISTS `language`;
 
 CREATE TABLE `language` (
-  `id` mediumint NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `description` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -31,7 +31,7 @@ CREATE TABLE `language` (
 DROP TABLE IF EXISTS `question`;
 
 CREATE TABLE `question` (
-  `id` mediumint NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `id_language` mediumint NOT NULL,
   `id_user` mediumint NOT NULL,
   `created` timestamp NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE `question` (
 DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
-  `id` mediumint NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `middle_name` varchar(45) DEFAULT NULL,
   `surname` varchar(45) DEFAULT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE `user` (
 DROP TABLE IF EXISTS `user - language`;
 
 CREATE TABLE `user - language` (
-  `id` mediumint NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `id_user` mediumint NOT NULL,
   `id_language` mediumint NOT NULL,
   PRIMARY KEY (`id`),
@@ -74,7 +74,7 @@ CREATE TABLE `user - language` (
 DROP TABLE IF EXISTS `vote`;
 
 CREATE TABLE `vote` (
-  `id` mediumint NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `id_question` mediumint NOT NULL,
   `id_user` mediumint NOT NULL,
   `vote` enum('-1','0','1') NOT NULL DEFAULT '0',
