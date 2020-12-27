@@ -110,6 +110,22 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
+DROP TABLE IF EXISTS `user-language`;
+
+CREATE TABLE `user-language` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `id_user` bigint NOT NULL,
+  `id_language` bigint NOT NULL,
+  `reputation` int NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_usuario - lenguaje_1_idx` (`id_user`),
+  KEY `fk_usuario - lenguaje_2_idx` (`id_language`),
+  CONSTRAINT `fk_user - language_1` FOREIGN KEY (`id_language`) REFERENCES `language` (`id`),
+  CONSTRAINT `fk_user - language_2` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
 DROP TABLE IF EXISTS `question_content`;
 
 CREATE TABLE `question_content` (
