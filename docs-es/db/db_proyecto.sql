@@ -80,6 +80,36 @@ CREATE TABLE `question` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `surname_1` varchar(100) NOT NULL DEFAULT '',
+  `surname_2` varchar(100) NOT NULL DEFAULT '',
+  `username` varchar(100) NOT NULL DEFAULT '',
+  `password` varchar(255) NOT NULL DEFAULT '',
+  `email` varchar(100) NOT NULL,
+  `bio` longtext,
+  `added_at` int unsigned NOT NULL DEFAULT '0',
+  `modified_at` int unsigned NOT NULL DEFAULT '0',
+  `first_access` int unsigned NOT NULL DEFAULT '0',
+  `last_access` int unsigned NOT NULL DEFAULT '0',
+  `last_login` int unsigned NOT NULL DEFAULT '0',
+  `current_login` int unsigned NOT NULL DEFAULT '0',
+  `last_ip` varchar(45) NOT NULL DEFAULT '',
+  `verified` tinyint(1) NOT NULL DEFAULT '0',
+  `suspended` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `login_attemps` smallint unsigned NOT NULL DEFAULT '0',
+  `login_lockout_expiry` int unsigned NOT NULL DEFAULT '0',
+  `reputation` int NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `email_UNIQUE` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
 DROP TABLE IF EXISTS `question_content`;
 
 CREATE TABLE `question_content` (
@@ -203,10 +233,10 @@ DELIMITER ;
 DELIMITER ;;
 CREATE PROCEDURE `updateUserLanguageReputation`(IN idrow BIGINT)
 BEGIN
-	DECLARE aux INTEGER DEFAULT 1;
+    DECLARE aux INTEGER DEFAULT 1;
     DECLARE rep INTEGER DEFAULT 0;
 
-	SELECT reputation
+    SELECT reputation
 	INTO rep
     FROM `user - language`
     WHERE id = idrow;
@@ -225,10 +255,10 @@ DELIMITER ;
 DELIMITER ;;
 CREATE PROCEDURE `updateUserPlatformReputation`(IN userID BIGINT)
 BEGIN
-	DECLARE aux INTEGER DEFAULT 1;
+    DECLARE aux INTEGER DEFAULT 1;
     DECLARE rep INTEGER DEFAULT 0;
 
-	SELECT reputation
+    SELECT reputation
 	INTO rep
     FROM user
     WHERE id = userID;
