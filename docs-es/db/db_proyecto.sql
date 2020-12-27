@@ -388,6 +388,15 @@ BEGIN
 RETURN votes;
 END ;;
 
+CREATE DEFINER=`chema`@`localhost` FUNCTION `generateAvatarID`(mail VARCHAR(100)) RETURNS varchar(32) CHARSET utf8mb4
+    READS SQL DATA
+    DETERMINISTIC
+BEGIN
+	DECLARE id VARCHAR(32);
+    SELECT MD5(TRIM(LOWER(mail))) AS gravatar INTO id;
+RETURN id;
+END ;;
+
 DELIMITER ;
 
 
