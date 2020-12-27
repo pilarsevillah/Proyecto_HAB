@@ -397,6 +397,25 @@ BEGIN
 RETURN id;
 END ;;
 
+CREATE DEFINER=`chema`@`localhost` TRIGGER `answer_BEFORE_INSERT` BEFORE INSERT ON `answer` FOR EACH ROW BEGIN
+	IF new.validated_by_id IS NULL THEN
+    	SET new.validated_at = NULL;
+	ELSE
+		SET new.validated_at = UNIX_TIMESTAMP(NOW());
+	END IF;
+END;;
+
+CREATE DEFINER=`chema`@`localhost` TRIGGER `answer_BEFORE_UPDATE` BEFORE UPDATE ON `answer` FOR EACH ROW BEGIN
+	IF new.validated_by_id IS NULL THEN
+    	SET new.validated_at = NULL;
+	ELSE
+		IF old.validated_by_id <> new.validated_by_id THEN
+			SET new.validated_at = UNIX_TIMESTAMP(NOW());
+		END IF;
+	END IF;
+END ;;
+
+
 DELIMITER ;
 
 
