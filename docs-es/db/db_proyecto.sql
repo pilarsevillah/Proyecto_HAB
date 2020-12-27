@@ -38,11 +38,12 @@ DROP TABLE IF EXISTS `language`;
 CREATE TABLE `language` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
-  `description` longtext,
+  `description` text NOT NULL,
+  `added_at` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `nombre_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
 DROP TABLE IF EXISTS `question`;
