@@ -460,6 +460,9 @@ END;;
 
 DELIMITER ;
 
+DROP VIEW IF EXISTS `question_header`;
+
+CREATE VIEW `question_header` AS select `q`.`id` AS `id`,`q`.`title` AS `title`,`l`.`name` AS `language_name`,`q`.`view_count` AS `view_count`,`GETQUESTIONANSWERSCOUNT`(`qc`.`question_id`) AS `answer_count`,`GETCONTENTVOTES`(`qc`.`id`) AS `vote_count`,`HASVALIDATEDANSWERS`(`q`.`id`) AS `has_validated_answers`,`u`.`username` AS `asked_by`,`qc`.`added_at` AS `added_at`,`q`.`closed` AS `closed`,`q`.`deleted` AS `deleted` from (((`question_content` `qc` join `question` `q` on(((`q`.`id` = `qc`.`question_id`) and (`qc`.`type` = 'question')))) join `language` `l` on((`q`.`language_id` = `l`.`id`))) join `user` `u` on((`qc`.`author` = `u`.`id`)));
 
 CREATE EVENT IF NOT EXISTS reduceReputationDaily
 ON SCHEDULE EVERY 5 DAY_HOUR
