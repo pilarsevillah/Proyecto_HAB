@@ -353,6 +353,18 @@ BEGIN
 	RETURN answers;
 END ;;
 
+CREATE DEFINER=`root`@`localhost` FUNCTION `getNumLanguageQuestionsWeek`( lang_id BIGINT ) RETURNS int
+    READS SQL DATA
+    DETERMINISTIC
+BEGIN
+DECLARE CONT INT;
+	SELECT COUNT(`q`.`id`) INTO CONT
+	FROM `db_proyecto_consulta`.`question` AS `q`
+    JOIN `db_proyecto_consulta`.`question_content` `qc` ON `q`.`id` = `qc`.`question_id`
+    WHERE `q`.`language_id` = lang_id AND `qc`.`type` = 'question'
+		AND WEEK(NOW(),3) = WEEK(FROM_UNIXTIME(`qc`.`added_at`),3);
+RETURN CONT;
+END ;;
 
 DELIMITER ;
 
