@@ -17,6 +17,22 @@ CREATE TABLE `answer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
+DROP TABLE IF EXIST `avatar`;
+
+CREATE TABLE `avatar` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint NOT NULL,
+  `type` enum('gravatar','custom') NOT NULL DEFAULT 'custom',
+  `avatar` varchar(1024) NOT NULL,
+  `selected` tinyint(1) NOT NULL DEFAULT '1',
+  `added_at` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_avatar_1_idx` (`user_id`),
+  CONSTRAINT `fk_avatar_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
 DROP TABLE IF EXISTS `language`;
 
 CREATE TABLE `language` (
