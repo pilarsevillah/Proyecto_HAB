@@ -33,6 +33,20 @@ CREATE TABLE `avatar` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
+DROP TABLE IF EXISTS `comment`;
+
+CREATE TABLE `comment` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `content_id` bigint NOT NULL,
+  `parent_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_comment_1_idx` (`content_id`,`parent_id`),
+  KEY `fk_comment_2_idx` (`parent_id`),
+  CONSTRAINT `fk_comment_1` FOREIGN KEY (`content_id`) REFERENCES `question_content` (`id`),
+  CONSTRAINT `fk_comment_2` FOREIGN KEY (`parent_id`) REFERENCES `question_content` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
 DROP TABLE IF EXISTS `language`;
 
 CREATE TABLE `language` (
