@@ -366,7 +366,7 @@ DECLARE CONT INT;
 RETURN CONT;
 END ;;
 
-CREATE DEFINER=`chema`@`localhost` FUNCTION `getNumLanguageQuestionsToday`( lang_id BIGINT ) RETURNS int
+CREATE DEFINER=`root`@`localhost` FUNCTION `getNumLanguageQuestionsToday`( lang_id BIGINT ) RETURNS int
     READS SQL DATA
     DETERMINISTIC
 BEGIN
@@ -416,13 +416,13 @@ CREATE DEFINER=`root`@`localhost` TRIGGER `answer_BEFORE_UPDATE` BEFORE UPDATE O
 END;;
 
 CREATE DEFINER=`root`@`localhost` TRIGGER `comment_BEFORE_INSERT` BEFORE INSERT ON `comment` FOR EACH ROW BEGIN
-	IF (NEW.id_content = NEW.id_parent) THEN
+	IF (NEW.content_id = NEW.parent_id) THEN
 		SIGNAL SQLSTATE '40000' SET MESSAGE_TEXT = 'invalid data';
 	END IF;
 END;;
 
 CREATE DEFINER=`root`@`localhost` TRIGGER `comment_BEFORE_UPDATE` BEFORE UPDATE ON `comment` FOR EACH ROW BEGIN
-	IF (NEW.id_content = NEW.id_parent) THEN
+	IF (NEW.content_id = NEW.parent_id) THEN
 		SIGNAL SQLSTATE '40000' SET MESSAGE_TEXT = 'invalid data';
 	END IF;
 END;;
@@ -470,3 +470,4 @@ COMMENT 'Reduce user\'s reputation every day'
 DO
 	CALL `db_proyecto_consulta`.`updatePlatformReputation`();
 	CALL `db_proyecto_consulta`.`updateLanguageReputation`();
+
