@@ -445,6 +445,19 @@ CREATE DEFINER=`root`@`localhost` TRIGGER `question_content_BEFORE_UPDATE` BEFOR
 	SET new.last_activity_at = UNIX_TIMESTAMP(NOW());
 END;;
 
+CREATE DEFINER=`root`@`localhost` TRIGGER `user_AFTER_INSERT` AFTER INSERT ON `user` FOR EACH ROW BEGIN
+	INSERT INTO `db_proyecto_consulta`.`avatar` (`user_id`, `type`, `avatar`)
+	VALUES ( new.`id`, 'gravatar', `db_proyecto_consulta`.`generateAvatarID`(new.email));
+END;;
+
+CREATE DEFINER=`root`@`localhost` TRIGGER `user_AFTER_UPDATE` AFTER UPDATE ON `user` FOR EACH ROW BEGIN
+	IF OLD.email <> NEW.email THEN
+		UPDATE `db_proyecto_consulta`.`avatar`
+		SET `avatar` = `db_proyecto_consulta`.`generateAvatarID`(new.email)
+		WHERE `avatar`.`id` = OLD.`id` AND `avatar`.`type` = 'gravatar';
+	END IF;
+END;;
+
 DELIMITER ;
 
 
