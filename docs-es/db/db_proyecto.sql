@@ -366,6 +366,18 @@ DECLARE CONT INT;
 RETURN CONT;
 END ;;
 
+CREATE DEFINER=`chema`@`localhost` FUNCTION `getNumLanguageQuestionsToday`( lang_id BIGINT ) RETURNS int
+    READS SQL DATA
+    DETERMINISTIC
+BEGIN
+	DECLARE CONT INT;
+	SELECT COUNT(`q`.`id`) INTO CONT 
+	FROM `db_proyecto_consulta`.`question` AS `q`
+    JOIN `db_proyecto_consulta`.`question_content` `qc` ON `q`.`id` = `qc`.`question_id`
+    WHERE `q`.`language_id` = lang_id AND `qc`.`type` = 'question' AND `qc`.`added_at` > UNIX_TIMESTAMP(CURDATE());
+RETURN CONT;
+END ;;
+
 DELIMITER ;
 
 
