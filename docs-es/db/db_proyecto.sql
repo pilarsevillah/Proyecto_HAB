@@ -49,6 +49,7 @@ CREATE TABLE `comment` (
   CONSTRAINT `fk_comment_2` FOREIGN KEY (`parent_id`) REFERENCES `question_content` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
+
 DROP TABLE IF EXISTS `language`;
 
 CREATE TABLE `language` (
@@ -66,16 +67,17 @@ DROP TABLE IF EXISTS `question`;
 
 CREATE TABLE `question` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `id_language` bigint NOT NULL,
-  `id_user` bigint NOT NULL,
-  `created` timestamp NOT NULL,
-  `title` varchar(100) NOT NULL,
-  `content` varchar(500) NOT NULL,
+  `title` varchar(300) NOT NULL DEFAULT '',
+  `view_count` int unsigned NOT NULL DEFAULT '0',
+  `language_id` bigint NOT NULL,
+  `closed` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_pregunta_1_idx` (`id_language`),
-  KEY `fk_pregunta_2_idx` (`id_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `title_UNIQUE` (`title`),
+  KEY `fk_question_1_idx` (`language_id`),
+  CONSTRAINT `fk_question_1` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
 DROP TABLE IF EXISTS `user`;
