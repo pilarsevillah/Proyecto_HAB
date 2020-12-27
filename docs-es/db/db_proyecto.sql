@@ -185,14 +185,18 @@ DROP TABLE IF EXISTS `vote`;
 
 CREATE TABLE `vote` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `id_question` bigint NOT NULL,
-  `id_user` bigint NOT NULL,
-  `vote` enum('-1','0','1') NOT NULL DEFAULT '0',
+  `content_id` bigint NOT NULL,
+  `user_id` bigint NOT NULL,
+  `vote` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `usuario_pregunta_UNIQUE` (`id_question`,`id_user`),
-  KEY `fk_voto_2_idx` (`id_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `usuario_pregunta_UNIQUE` (`content_id`,`user_id`),
+  KEY `fk_voto_2_idx` (`user_id`),
+  CONSTRAINT `fk_vote_1` FOREIGN KEY (`content_id`) REFERENCES `question_content` (`id`),
+  CONSTRAINT `fk_vote_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `vote_inrange` CHECK (((`vote` = -(1)) or (`vote` = 1)))
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
 
 DELIMITER ;;
 CREATE PROCEDURE `updateLanguageReputation`()
