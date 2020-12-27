@@ -321,6 +321,20 @@ BEGIN
     ORDER BY `votes_count` DESC, `qc`.`added_at` ASC;
 END ;;
 
+CREATE DEFINER=`root`@`localhost` FUNCTION `hasValidatedAnswers`(q_id BIGINT) RETURNS int
+    READS SQL DATA
+    DETERMINISTIC
+BEGIN
+	DECLARE validations INT;
+	SELECT SUM(`a`.`validated`) INTO validations
+	FROM `db_proyecto_consulta`.`answer` AS a
+	JOIN `db_proyecto_consulta`.`question_content` as qc ON `qc`.`id` = `a`.`content_id`
+	WHERE qc.type = 'answer' AND qc.question_id = q_id;
+    IF validations IS NULL THEN SET validations = 0; END IF;
+    IF validations > 0 THEN SET validations = 1; END IF;
+RETURN validations;
+END ;;
+
 DELIMITER ;
 
 
