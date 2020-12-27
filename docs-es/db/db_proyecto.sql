@@ -293,6 +293,20 @@ BEGIN
 	WHERE `avatar`.`user_id` = user_id AND `avatar`.`id` <> avatar_id;
 END ;;
 
+CREATE DEFINER=`chema`@`localhost` PROCEDURE `getCommentsOf`(parent_id BIGINT)
+BEGIN
+	SELECT `c`.`id` AS `id`,
+		`qc`.`content` AS `comment_title`,
+		`u`.`username` AS `author`,
+		GETCONTENTVOTES(`qc`.`id`) AS `usefull_comment`,
+		`qc`.`added_at` AS `added`
+	FROM `db_proyecto_consulta`.`comment` AS c
+    JOIN `db_proyecto_consulta`.`question_content` `qc` ON `c`.`content_id` = `qc`.`id`
+    JOIN `db_proyecto_consulta`.`user` `u` ON `qc`.`author` = `u`.`id`
+    WHERE `c`.`parent_id` = parent_id
+    ORDER BY `usefull_comment` DESC, `qc`.`added_at` ASC;
+END ;;
+
 DELIMITER ;
 
 
