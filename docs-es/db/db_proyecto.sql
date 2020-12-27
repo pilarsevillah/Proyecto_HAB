@@ -217,10 +217,8 @@ BEGIN
         SET reputation=aux
         WHERE id = idrow;
 END ;;
-DELIMITER ;
 
 
-DELIMITER ;;
 CREATE PROCEDURE `updateUserPlatformReputation`(IN userID BIGINT)
 BEGIN
     DECLARE aux INTEGER DEFAULT 1;
@@ -239,10 +237,8 @@ BEGIN
         SET reputation=aux
         WHERE id = userID;
 END ;;
-DELIMITER ;
 
 
-DELIMITER ;;
 CREATE PROCEDURE `updateLanguageReputation`()
 BEGIN
 	
@@ -265,10 +261,8 @@ BEGIN
     CLOSE pointer;
         
 END ;;
-DELIMITER ;
 
 
-DELIMITER ;;
 CREATE PROCEDURE `updatePlatformReputation`()
 BEGIN
 	
@@ -291,6 +285,14 @@ BEGIN
     CLOSE pointer;
         
 END ;;
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `removeSelectedAvatarsFromUser`(avatar_id BIGINT, user_id BIGINT)
+BEGIN
+	UPDATE `db_proyecto_consulta`.`avatar`
+		SET `selected` = 0
+	WHERE `avatar`.`user_id` = user_id AND `avatar`.`id` <> avatar_id;
+END ;;
+
 DELIMITER ;
 
 
