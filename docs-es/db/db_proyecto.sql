@@ -199,7 +199,7 @@ CREATE TABLE `vote` (
 
 
 DELIMITER ;;
-CREATE PROCEDURE `updateUserLanguageReputation`(IN idrow BIGINT)
+CREATE DEFINER=`pconsulta`@`localhost` PROCEDURE `updateUserLanguageReputation`(IN idrow BIGINT)
 BEGIN
     DECLARE aux INTEGER DEFAULT 1;
     DECLARE rep INTEGER DEFAULT 0;
@@ -219,7 +219,7 @@ BEGIN
 END ;;
 
 
-CREATE PROCEDURE `updateUserPlatformReputation`(IN userID BIGINT)
+CREATE DEFINER=`pconsulta`@`localhost` PROCEDURE `updateUserPlatformReputation`(IN userID BIGINT)
 BEGIN
     DECLARE aux INTEGER DEFAULT 1;
     DECLARE rep INTEGER DEFAULT 0;
@@ -239,7 +239,7 @@ BEGIN
 END ;;
 
 
-CREATE PROCEDURE `updateLanguageReputation`()
+CREATE DEFINER=`pconsulta`@`localhost` PROCEDURE `updateLanguageReputation`()
 BEGIN
 	
     DECLARE finished INTEGER DEFAULT 0;
@@ -263,7 +263,7 @@ BEGIN
 END ;;
 
 
-CREATE PROCEDURE `updatePlatformReputation`()
+CREATE DEFINER=`pconsulta`@`localhost` PROCEDURE `updatePlatformReputation`()
 BEGIN
 	
     DECLARE finished INTEGER DEFAULT 0;
@@ -286,14 +286,14 @@ BEGIN
         
 END ;;
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `removeSelectedAvatarsFromUser`(avatar_id BIGINT, user_id BIGINT)
+CREATE DEFINER=`pconsulta`@`localhost` PROCEDURE `removeSelectedAvatarsFromUser`(avatar_id BIGINT, user_id BIGINT)
 BEGIN
 	UPDATE `db_proyecto_consulta`.`avatar`
 		SET `selected` = 0
 	WHERE `avatar`.`user_id` = user_id AND `avatar`.`id` <> avatar_id;
 END ;;
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getCommentsOf`(parent_id BIGINT)
+CREATE DEFINER=`pconsulta`@`localhost` PROCEDURE `getCommentsOf`(parent_id BIGINT)
 BEGIN
 	SELECT `c`.`id` AS `id`,
 		`qc`.`content` AS `comment_title`,
@@ -307,7 +307,7 @@ BEGIN
     ORDER BY `usefull_comment` DESC, `qc`.`added_at` ASC;
 END ;;
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAnswersOfQuestion`(question_id BIGINT)
+CREATE DEFINER=`pconsulta`@`localhost` PROCEDURE `getAnswersOfQuestion`(question_id BIGINT)
 BEGIN
 	SELECT `a`.`id` as `id`,
 		`qc`.`content` AS `content`,
@@ -321,7 +321,7 @@ BEGIN
     ORDER BY `votes_count` DESC, `qc`.`added_at` ASC;
 END ;;
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `hasValidatedAnswers`(q_id BIGINT) RETURNS int
+CREATE DEFINER=`pconsulta`@`localhost` FUNCTION `hasValidatedAnswers`(q_id BIGINT) RETURNS int
     READS SQL DATA
     DETERMINISTIC
 BEGIN
@@ -335,7 +335,7 @@ BEGIN
 RETURN validations;
 END ;;
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `getQuestionAnswersCount`(q_id BIGINT) RETURNS int
+CREATE DEFINER=`pconsulta`@`localhost` FUNCTION `getQuestionAnswersCount`(q_id BIGINT) RETURNS int
     READS SQL DATA
     DETERMINISTIC
 BEGIN
@@ -344,7 +344,7 @@ BEGIN
 	RETURN answers;
 END ;;
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `getQuestionAnswers`(q_id BIGINT) RETURNS int
+CREATE DEFINER=`pconsulta`@`localhost` FUNCTION `getQuestionAnswers`(q_id BIGINT) RETURNS int
     READS SQL DATA
     DETERMINISTIC
 BEGIN
@@ -353,7 +353,7 @@ BEGIN
 	RETURN answers;
 END ;;
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `getNumLanguageQuestionsWeek`( lang_id BIGINT ) RETURNS int
+CREATE DEFINER=`pconsulta`@`localhost` FUNCTION `getNumLanguageQuestionsWeek`( lang_id BIGINT ) RETURNS int
     READS SQL DATA
     DETERMINISTIC
 BEGIN
@@ -366,7 +366,7 @@ DECLARE CONT INT;
 RETURN CONT;
 END ;;
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `getNumLanguageQuestionsToday`( lang_id BIGINT ) RETURNS int
+CREATE DEFINER=`pconsulta`@`localhost` FUNCTION `getNumLanguageQuestionsToday`( lang_id BIGINT ) RETURNS int
     READS SQL DATA
     DETERMINISTIC
 BEGIN
@@ -378,7 +378,7 @@ BEGIN
 RETURN CONT;
 END ;;
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `getContentVotes`(c_id BIGINT) RETURNS int
+CREATE DEFINER=`pconsulta`@`localhost` FUNCTION `getContentVotes`(c_id BIGINT) RETURNS int
     READS SQL DATA
     DETERMINISTIC
 BEGIN
@@ -388,7 +388,7 @@ BEGIN
 RETURN votes;
 END ;;
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `generateAvatarID`(mail VARCHAR(100)) RETURNS varchar(32) CHARSET utf8mb4
+CREATE DEFINER=`pconsulta`@`localhost` FUNCTION `generateAvatarID`(mail VARCHAR(100)) RETURNS varchar(32) CHARSET utf8mb4
     READS SQL DATA
     DETERMINISTIC
 BEGIN
@@ -397,7 +397,7 @@ BEGIN
 RETURN id;
 END ;;
 
-CREATE DEFINER=`root`@`localhost` TRIGGER `answer_BEFORE_INSERT` BEFORE INSERT ON `answer` FOR EACH ROW BEGIN
+CREATE DEFINER=`pconsulta`@`localhost` TRIGGER `answer_BEFORE_INSERT` BEFORE INSERT ON `answer` FOR EACH ROW BEGIN
 	IF new.validated_by_id IS NULL THEN
     	SET new.validated_at = NULL;
 	ELSE
@@ -405,7 +405,7 @@ CREATE DEFINER=`root`@`localhost` TRIGGER `answer_BEFORE_INSERT` BEFORE INSERT O
 	END IF;
 END;;
 
-CREATE DEFINER=`root`@`localhost` TRIGGER `answer_BEFORE_UPDATE` BEFORE UPDATE ON `answer` FOR EACH ROW BEGIN
+CREATE DEFINER=`pconsulta`@`localhost` TRIGGER `answer_BEFORE_UPDATE` BEFORE UPDATE ON `answer` FOR EACH ROW BEGIN
 	IF new.validated_by_id IS NULL THEN
     	SET new.validated_at = NULL;
 	ELSE
@@ -415,42 +415,42 @@ CREATE DEFINER=`root`@`localhost` TRIGGER `answer_BEFORE_UPDATE` BEFORE UPDATE O
 	END IF;
 END;;
 
-CREATE DEFINER=`root`@`localhost` TRIGGER `comment_BEFORE_INSERT` BEFORE INSERT ON `comment` FOR EACH ROW BEGIN
+CREATE DEFINER=`pconsulta`@`localhost` TRIGGER `comment_BEFORE_INSERT` BEFORE INSERT ON `comment` FOR EACH ROW BEGIN
 	IF (NEW.content_id = NEW.parent_id) THEN
 		SIGNAL SQLSTATE '40000' SET MESSAGE_TEXT = 'invalid data';
 	END IF;
 END;;
 
-CREATE DEFINER=`root`@`localhost` TRIGGER `comment_BEFORE_UPDATE` BEFORE UPDATE ON `comment` FOR EACH ROW BEGIN
+CREATE DEFINER=`pconsulta`@`localhost` TRIGGER `comment_BEFORE_UPDATE` BEFORE UPDATE ON `comment` FOR EACH ROW BEGIN
 	IF (NEW.content_id = NEW.parent_id) THEN
 		SIGNAL SQLSTATE '40000' SET MESSAGE_TEXT = 'invalid data';
 	END IF;
 END;;
 
-CREATE DEFINER=`root`@`localhost` TRIGGER `language_BEFORE_INSERT` BEFORE INSERT ON `language` FOR EACH ROW BEGIN
+CREATE DEFINER=`pconsulta`@`localhost` TRIGGER `language_BEFORE_INSERT` BEFORE INSERT ON `language` FOR EACH ROW BEGIN
 	SET new.added_at = UNIX_TIMESTAMP(NOW());
 END;;
 
-CREATE DEFINER=`root`@`localhost` TRIGGER `closed_questions_BEFORE_INSERT` BEFORE INSERT ON `question_closed` FOR EACH ROW BEGIN
+CREATE DEFINER=`pconsulta`@`localhost` TRIGGER `closed_questions_BEFORE_INSERT` BEFORE INSERT ON `question_closed` FOR EACH ROW BEGIN
 	SET new.closed_at = UNIX_TIMESTAMP(NOW());
 END;;
 
-CREATE DEFINER=`root`@`localhost` TRIGGER `question_content_BEFORE_INSERT` BEFORE INSERT ON `question_content` FOR EACH ROW BEGIN
+CREATE DEFINER=`pconsulta`@`localhost` TRIGGER `question_content_BEFORE_INSERT` BEFORE INSERT ON `question_content` FOR EACH ROW BEGIN
 	SET new.added_at = UNIX_TIMESTAMP(NOW());
     SET new.last_activity_at = UNIX_TIMESTAMP(NOW());
     SET new.last_activity_by_id = new.author;
 END;;
 
-CREATE DEFINER=`root`@`localhost` TRIGGER `question_content_BEFORE_UPDATE` BEFORE UPDATE ON `question_content` FOR EACH ROW BEGIN
+CREATE DEFINER=`pconsulta`@`localhost` TRIGGER `question_content_BEFORE_UPDATE` BEFORE UPDATE ON `question_content` FOR EACH ROW BEGIN
 	SET new.last_activity_at = UNIX_TIMESTAMP(NOW());
 END;;
 
-CREATE DEFINER=`root`@`localhost` TRIGGER `user_AFTER_INSERT` AFTER INSERT ON `user` FOR EACH ROW BEGIN
+CREATE DEFINER=`pconsulta`@`localhost` TRIGGER `user_AFTER_INSERT` AFTER INSERT ON `user` FOR EACH ROW BEGIN
 	INSERT INTO `db_proyecto_consulta`.`avatar` (`user_id`, `type`, `avatar`)
 	VALUES ( new.`id`, 'gravatar', `db_proyecto_consulta`.`generateAvatarID`(new.email));
 END;;
 
-CREATE DEFINER=`root`@`localhost` TRIGGER `user_AFTER_UPDATE` AFTER UPDATE ON `user` FOR EACH ROW BEGIN
+CREATE DEFINER=`pconsulta`@`localhost` TRIGGER `user_AFTER_UPDATE` AFTER UPDATE ON `user` FOR EACH ROW BEGIN
 	IF OLD.email <> NEW.email THEN
 		UPDATE `db_proyecto_consulta`.`avatar`
 		SET `avatar` = `db_proyecto_consulta`.`generateAvatarID`(new.email)
@@ -462,17 +462,18 @@ DELIMITER ;
 
 DROP VIEW IF EXISTS `question_header`;
 
-CREATE VIEW `question_header` AS select `q`.`id` AS `id`,`q`.`title` AS `title`,`l`.`name` AS `language_name`,`q`.`view_count` AS `view_count`,`GETQUESTIONANSWERSCOUNT`(`qc`.`question_id`) AS `answer_count`,`GETCONTENTVOTES`(`qc`.`id`) AS `vote_count`,`HASVALIDATEDANSWERS`(`q`.`id`) AS `has_validated_answers`,`u`.`username` AS `asked_by`,`qc`.`added_at` AS `added_at`,`q`.`closed` AS `closed`,`q`.`deleted` AS `deleted` from (((`question_content` `qc` join `question` `q` on(((`q`.`id` = `qc`.`question_id`) and (`qc`.`type` = 'question')))) join `language` `l` on((`q`.`language_id` = `l`.`id`))) join `user` `u` on((`qc`.`author` = `u`.`id`)));
+CREATE DEFINER=`pconsulta`@`localhost` VIEW `question_header` AS select `q`.`id` AS `id`,`q`.`title` AS `title`,`l`.`name` AS `language_name`,`q`.`view_count` AS `view_count`,`GETQUESTIONANSWERSCOUNT`(`qc`.`question_id`) AS `answer_count`,`GETCONTENTVOTES`(`qc`.`id`) AS `vote_count`,`HASVALIDATEDANSWERS`(`q`.`id`) AS `has_validated_answers`,`u`.`username` AS `asked_by`,`qc`.`added_at` AS `added_at`,`q`.`closed` AS `closed`,`q`.`deleted` AS `deleted` from (((`question_content` `qc` join `question` `q` on(((`q`.`id` = `qc`.`question_id`) and (`qc`.`type` = 'question')))) join `language` `l` on((`q`.`language_id` = `l`.`id`))) join `user` `u` on((`qc`.`author` = `u`.`id`)));
 
 
 DROP VIEW IF EXISTS `languages_page`;
 
-CREATE DEFINER=`root`@`localhost` VIEW `languages_page` AS select `l`.`name` AS `name`,`l`.`description` AS `description`,`GETNUMLANGUAGEQUESTIONSTODAY`(`l`.`id`) AS `questions_today`,`GETNUMLANGUAGEQUESTIONSWEEK`(`l`.`id`) AS `questions_week` from `language` `l`;
+CREATE DEFINER=`pconsulta`@`localhost` VIEW `languages_page` AS select `l`.`name` AS `name`,`l`.`description` AS `description`,`GETNUMLANGUAGEQUESTIONSTODAY`(`l`.`id`) AS `questions_today`,`GETNUMLANGUAGEQUESTIONSWEEK`(`l`.`id`) AS `questions_week` from `language` `l`;
 
-CREATE EVENT IF NOT EXISTS reduceReputationDaily
+DROP EVENT IF EXISTS reduceReputationDaily;
+
+CREATE DEFINER=`pconsulta`@`localhost` EVENT IF NOT EXISTS reduceReputationDaily
 ON SCHEDULE EVERY 5 DAY_HOUR
 COMMENT 'Reduce user\'s reputation every day'
 DO
 	CALL `db_proyecto_consulta`.`updatePlatformReputation`();
 	CALL `db_proyecto_consulta`.`updateLanguageReputation`();
-
