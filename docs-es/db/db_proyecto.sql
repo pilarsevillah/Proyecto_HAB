@@ -431,6 +431,10 @@ CREATE DEFINER=`root`@`localhost` TRIGGER `language_BEFORE_INSERT` BEFORE INSERT
 	SET new.added_at = UNIX_TIMESTAMP(NOW());
 END;;
 
+CREATE DEFINER=`root`@`localhost` TRIGGER `closed_questions_BEFORE_INSERT` BEFORE INSERT ON `question_closed` FOR EACH ROW BEGIN
+	SET new.closed_at = UNIX_TIMESTAMP(NOW());
+END;;
+
 DELIMITER ;
 
 
