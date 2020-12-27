@@ -388,7 +388,7 @@ BEGIN
 RETURN votes;
 END ;;
 
-CREATE DEFINER=`chema`@`localhost` FUNCTION `generateAvatarID`(mail VARCHAR(100)) RETURNS varchar(32) CHARSET utf8mb4
+CREATE DEFINER=`root`@`localhost` FUNCTION `generateAvatarID`(mail VARCHAR(100)) RETURNS varchar(32) CHARSET utf8mb4
     READS SQL DATA
     DETERMINISTIC
 BEGIN
@@ -397,7 +397,7 @@ BEGIN
 RETURN id;
 END ;;
 
-CREATE DEFINER=`chema`@`localhost` TRIGGER `answer_BEFORE_INSERT` BEFORE INSERT ON `answer` FOR EACH ROW BEGIN
+CREATE DEFINER=`root`@`localhost` TRIGGER `answer_BEFORE_INSERT` BEFORE INSERT ON `answer` FOR EACH ROW BEGIN
 	IF new.validated_by_id IS NULL THEN
     	SET new.validated_at = NULL;
 	ELSE
@@ -405,7 +405,7 @@ CREATE DEFINER=`chema`@`localhost` TRIGGER `answer_BEFORE_INSERT` BEFORE INSERT 
 	END IF;
 END;;
 
-CREATE DEFINER=`chema`@`localhost` TRIGGER `answer_BEFORE_UPDATE` BEFORE UPDATE ON `answer` FOR EACH ROW BEGIN
+CREATE DEFINER=`root`@`localhost` TRIGGER `answer_BEFORE_UPDATE` BEFORE UPDATE ON `answer` FOR EACH ROW BEGIN
 	IF new.validated_by_id IS NULL THEN
     	SET new.validated_at = NULL;
 	ELSE
@@ -413,7 +413,19 @@ CREATE DEFINER=`chema`@`localhost` TRIGGER `answer_BEFORE_UPDATE` BEFORE UPDATE 
 			SET new.validated_at = UNIX_TIMESTAMP(NOW());
 		END IF;
 	END IF;
-END ;;
+END;;
+
+CREATE DEFINER=`root`@`localhost` TRIGGER `comment_BEFORE_INSERT` BEFORE INSERT ON `comment` FOR EACH ROW BEGIN
+	IF (NEW.id_content = NEW.id_parent) THEN
+		SIGNAL SQLSTATE '40000' SET MESSAGE_TEXT = 'invalid data';
+	END IF;
+END;;
+
+CREATE DEFINER=`root`@`localhost` TRIGGER `comment_BEFORE_UPDATE` BEFORE UPDATE ON `comment` FOR EACH ROW BEGIN
+	IF (NEW.id_content = NEW.id_parent) THEN
+		SIGNAL SQLSTATE '40000' SET MESSAGE_TEXT = 'invalid data';
+	END IF;
+END;;
 
 
 DELIMITER ;
