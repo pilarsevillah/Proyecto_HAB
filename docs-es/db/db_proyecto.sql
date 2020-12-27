@@ -91,6 +91,25 @@ CREATE TABLE `question_close_reason` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
+DROP TABLE IF EXISTS `question_closed`;
+
+CREATE TABLE `question_closed` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `question_id` bigint NOT NULL,
+  `closed_at` int unsigned NOT NULL,
+  `closed_reason` bigint NOT NULL,
+  `closed_by_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `question_id_UNIQUE` (`question_id`),
+  KEY `fk_question_closed_2_idx` (`closed_by_id`),
+  KEY `fk_question_closed_3_idx` (`closed_reason`),
+  CONSTRAINT `fk_question_closed_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`),
+  CONSTRAINT `fk_question_closed_2` FOREIGN KEY (`closed_by_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `fk_question_closed_3` FOREIGN KEY (`closed_reason`) REFERENCES `question_closed` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
 DROP TABLE IF EXISTS `vote`;
 
 CREATE TABLE `vote` (
