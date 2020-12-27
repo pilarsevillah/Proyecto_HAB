@@ -293,7 +293,7 @@ BEGIN
 	WHERE `avatar`.`user_id` = user_id AND `avatar`.`id` <> avatar_id;
 END ;;
 
-CREATE DEFINER=`chema`@`localhost` PROCEDURE `getCommentsOf`(parent_id BIGINT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getCommentsOf`(parent_id BIGINT)
 BEGIN
 	SELECT `c`.`id` AS `id`,
 		`qc`.`content` AS `comment_title`,
@@ -305,6 +305,20 @@ BEGIN
     JOIN `db_proyecto_consulta`.`user` `u` ON `qc`.`author` = `u`.`id`
     WHERE `c`.`parent_id` = parent_id
     ORDER BY `usefull_comment` DESC, `qc`.`added_at` ASC;
+END ;;
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAnswersOfQuestion`(question_id BIGINT)
+BEGIN
+	SELECT `a`.`id` as `id`,
+		`qc`.`content` AS `content`,
+		`u`.`username` AS `author`,
+		GETCONTENTVOTES(`qc`.`id`) AS `votes_count`,
+		`qc`.`added_at` AS `added`
+	FROM `db_proyecto_consulta`.`answer` AS a
+    JOIN `db_proyecto_consulta`.`question_content` `qc` ON `a`.`content_id` = `qc`.`id`
+    JOIN `db_proyecto_consulta`.`user` `u` ON `qc`.`author` = `u`.`id`
+    WHERE `qc`.`question_id` = question_id
+    ORDER BY `votes_count` DESC, `qc`.`added_at` ASC;
 END ;;
 
 DELIMITER ;
