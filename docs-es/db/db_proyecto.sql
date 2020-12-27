@@ -80,48 +80,15 @@ CREATE TABLE `question` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `question_close_reason`; 
 
-CREATE TABLE `user` (
+CREATE TABLE `question_close_reason` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  `surname_1` varchar(100) NOT NULL DEFAULT '',
-  `surname_2` varchar(100) NOT NULL DEFAULT '',
-  `username` varchar(100) NOT NULL DEFAULT '',
-  `password` varchar(255) NOT NULL DEFAULT '',
-  `email` varchar(100) NOT NULL,
-  `bio` longtext,
-  `timecreated` int unsigned NOT NULL DEFAULT '0',
-  `timemodified` int unsigned NOT NULL DEFAULT '0',
-  `firstaccess` int unsigned NOT NULL DEFAULT '0',
-  `lastaccess` int unsigned NOT NULL DEFAULT '0',
-  `lastlogin` int unsigned NOT NULL DEFAULT '0',
-  `currentlogin` int unsigned NOT NULL DEFAULT '0',
-  `lastip` varchar(45) NOT NULL DEFAULT '',
-  `verified` tinyint(1) NOT NULL DEFAULT '0',
-  `suspended` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `loginattemps` smallint unsigned NOT NULL DEFAULT '0',
-  `loginlockoutexpiry` int unsigned NOT NULL DEFAULT '0',
-  `reputation` int NOT NULL DEFAULT '1',
+  `reason` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-
-DROP TABLE IF EXISTS `user - language`;
-
-CREATE TABLE `user - language` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `id_user` bigint NOT NULL,
-  `id_language` bigint NOT NULL,
-  `reputation` int NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_usuario - lenguaje_1_idx` (`id_user`),
-  KEY `fk_usuario - lenguaje_2_idx` (`id_language`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `reason_UNIQUE` (`reason`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
 DROP TABLE IF EXISTS `vote`;
