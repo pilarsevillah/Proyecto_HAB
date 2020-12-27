@@ -378,6 +378,16 @@ BEGIN
 RETURN CONT;
 END ;;
 
+CREATE DEFINER=`root`@`localhost` FUNCTION `getContentVotes`(c_id BIGINT) RETURNS int
+    READS SQL DATA
+    DETERMINISTIC
+BEGIN
+	DECLARE votes INT;
+    SELECT SUM(vote) INTO votes FROM `db_proyecto_consulta`.`vote` WHERE content_id = c_id;
+    IF votes is NULL THEN SET votes = 0; END IF;
+RETURN votes;
+END ;;
+
 DELIMITER ;
 
 
