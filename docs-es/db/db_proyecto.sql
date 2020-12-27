@@ -80,6 +80,31 @@ CREATE TABLE `question` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
+DROP TABLE IF EXISTS `question_content`;
+
+CREATE TABLE `question_content` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `type` enum('question','answer','comment') NOT NULL DEFAULT 'question',
+  `author` bigint NOT NULL DEFAULT '1',
+  `question_id` bigint NOT NULL,
+  `added_at` int unsigned NOT NULL,
+  `last_activity_at` int unsigned NOT NULL,
+  `last_activity_by_id` bigint NOT NULL,
+  `last_edited_at` int unsigned DEFAULT NULL,
+  `last_edited_by_id` bigint DEFAULT NULL,
+  `content` longtext NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_question_content_1_idx` (`question_id`),
+  KEY `fk_question_content_2_idx` (`last_activity_by_id`),
+  KEY `fk_question_content_3_idx` (`last_edited_by_id`),
+  CONSTRAINT `fk_question_content_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`),
+  CONSTRAINT `fk_question_content_2` FOREIGN KEY (`author`) REFERENCES `user` (`id`),
+  CONSTRAINT `fk_question_content_3` FOREIGN KEY (`last_activity_by_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `fk_question_content_4` FOREIGN KEY (`last_edited_by_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
 DROP TABLE IF EXISTS `question_close_reason`; 
 
 CREATE TABLE `question_close_reason` (
