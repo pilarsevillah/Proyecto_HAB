@@ -335,6 +335,15 @@ BEGIN
 RETURN validations;
 END ;;
 
+CREATE DEFINER=`root`@`localhost` FUNCTION `getQuestionAnswersCount`(q_id BIGINT) RETURNS int
+    READS SQL DATA
+    DETERMINISTIC
+BEGIN
+	DECLARE answers INT;
+	SELECT COUNT(id) INTO answers FROM `db_proyecto_consulta`.`question_content` WHERE (type = 'answer' AND question_id = q_id);
+	RETURN answers;
+END ;;
+
 DELIMITER ;
 
 
