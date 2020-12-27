@@ -435,6 +435,16 @@ CREATE DEFINER=`root`@`localhost` TRIGGER `closed_questions_BEFORE_INSERT` BEFOR
 	SET new.closed_at = UNIX_TIMESTAMP(NOW());
 END;;
 
+CREATE DEFINER=`root`@`localhost` TRIGGER `question_content_BEFORE_INSERT` BEFORE INSERT ON `question_content` FOR EACH ROW BEGIN
+	SET new.added_at = UNIX_TIMESTAMP(NOW());
+    SET new.last_activity_at = UNIX_TIMESTAMP(NOW());
+    SET new.last_activity_by_id = new.author;
+END;;
+
+CREATE DEFINER=`root`@`localhost` TRIGGER `question_content_BEFORE_UPDATE` BEFORE UPDATE ON `question_content` FOR EACH ROW BEGIN
+	SET new.last_activity_at = UNIX_TIMESTAMP(NOW());
+END;;
+
 DELIMITER ;
 
 
