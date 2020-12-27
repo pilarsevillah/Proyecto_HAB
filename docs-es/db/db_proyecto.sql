@@ -6,15 +6,17 @@ DROP TABLE IF EXISTS `answer`;
 
 CREATE TABLE `answer` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `id_question` bigint NOT NULL,
-  `id_user` bigint NOT NULL,
-  `content` varchar(500) NOT NULL,
-  `created` timestamp NOT NULL,
+  `validated` tinyint(1) NOT NULL DEFAULT '0',
+  `validated_at` int unsigned DEFAULT NULL,
+  `validated_by_id` bigint DEFAULT NULL,
+  `content_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_respuesta_1_idx` (`id_question`),
-  KEY `fk_respuesta_2_idx` (`id_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_answer_1_idx` (`content_id`),
+  KEY `fk_answer_2_idx` (`validated_by_id`),
+  CONSTRAINT `fk_answer_1` FOREIGN KEY (`content_id`) REFERENCES `question_content` (`id`),
+  CONSTRAINT `fk_answer_2` FOREIGN KEY (`validated_by_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 
 DROP TABLE IF EXIST `avatar`;
